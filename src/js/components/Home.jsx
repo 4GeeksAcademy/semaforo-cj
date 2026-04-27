@@ -1,28 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
+import ReactDOM from "react-dom/client";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+const TrafficLight = () => {
+  
+  const [color, setColor] = useState("red");
+  
+  
+  const [lights, setLights] = useState(["red", "yellow", "green"]);
 
-//create your first component
-const Home = () => {
-	return (
-		<div className="text-center">
-            
+ 
+  const toggleColor = () => {
+    const currentIndex = lights.indexOf(color);
+   
+    const nextIndex = (currentIndex + 1) % lights.length;
+    setColor(lights[nextIndex]);
+  };
 
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+  
+const addBlueLight = () => {
+  if (!lights.includes("blue")) { 
+    setLights([...lights, "blue"]);
+  }
 };
 
-export default Home;
+  return (
+    <div id="app">
+     
+      <div id="trafficTop"></div>
+      
+      
+      <div id="container">
+        {lights.map((lightColor, index) => (
+          <div
+            key={index}
+            // Comprobamos si el color actual del map es el seleccionado para añadir la clase
+            className={`${lightColor} light ${color === lightColor ? "selected" : ""}`}
+            onClick={() => setColor(lightColor)}
+          ></div>
+        ))}
+      </div>
+
+      
+      <div className="bonus-buttons">
+        <button onClick={toggleColor}>Alternar Color</button>
+        <button onClick={addblueLight}>Añadir blue</button>
+      </div>
+    </div>
+  );
+};
+
+// Renderizado en el DOM tal como lo piden las instrucciones
+const root = ReactDOM.createRoot(document.querySelector('#root'));
+root.render(<TrafficLight />);
