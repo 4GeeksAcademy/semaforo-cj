@@ -2,25 +2,73 @@
 <html>
   <head>
     <title>Traffic Light</title>
+
+    <!-- React -->
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
+
     <style>
-     
-      body { background: #333; display: flex; justify-content: center; padding-top: 50px; }
-      #trafficTop { width: 20px; height: 50px; background: black; margin: 0 auto; }
-      #container { background: black; width: 100px; padding: 20px; border-radius: 20px; }
-      .light { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; opacity: 0.3; cursor: pointer; }
-      .red { background: red; }
-      .yellow { background: yellow; }
-      .green { background: green; }
-      .purple { background: blue; }
-      .selected { opacity: 1; box-shadow: 0 0 30px 10px white; }
+      body {
+        background: #333;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+      }
+
+      #trafficTop {
+        width: 20px;
+        height: 50px;
+        background: black;
+        margin: 0 auto;
+      }
+
+      #container {
+        background: black;
+        width: 100px;
+        padding: 20px;
+        border-radius: 20px;
+      }
+
+      .light {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+        opacity: 0.3;
+        cursor: pointer;
+      }
+
+      .red {
+        background: red;
+      }
+
+      .yellow {
+        background: yellow;
+      }
+
+      .green {
+        background: green;
+      }
+
+      .blue {
+        background: blue;
+      }
+
+      .selected {
+        opacity: 1;
+        box-shadow: 0 0 30px 10px white;
+      }
+
+      button {
+        margin-top: 15px;
+        padding: 10px;
+        cursor: pointer;
+      }
     </style>
   </head>
-  <body>
 
+  <body>
     <div id="root"></div>
 
     <script type="text/babel">
@@ -30,24 +78,35 @@
         const [color, setColor] = useState("red");
         const [lights, setLights] = useState(["red", "yellow", "green"]);
 
+        const addBlueLight = () => {
+          // ✅ evita duplicados
+          if (!lights.includes("blue")) {
+            setLights([...lights, "blue"]);
+          }
+        };
+
         return (
           <div>
             <div id="trafficTop"></div>
+
             <div id="container">
               {lights.map((l) => (
-                <div 
-                  key={l}
-                  className={`light ${l} ${color === l ? "selected" : ""}`}
+                <div
+                  key={l} // ✅ mejor key
+                  className={`light ${l} ${
+                    color === l ? "selected" : ""
+                  }`}
                   onClick={() => setColor(l)}
                 />
               ))}
             </div>
-            <button onClick={() => setLights([...lights, "purple"])}>Añadir blue</button>
+
+            <button onClick={addBlueLight}>Añadir blue</button>
           </div>
         );
       };
 
-      const root = ReactDOM.createRoot(document.getElementById('root'));
+      const root = ReactDOM.createRoot(document.getElementById("root"));
       root.render(<TrafficLight />);
     </script>
   </body>
