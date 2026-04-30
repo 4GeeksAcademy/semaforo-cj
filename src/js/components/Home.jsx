@@ -1,46 +1,31 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom/client";
+import { useState,useEffect } from "react"
 
-const TrafficLight = () => {
-  const [color, setColor] = useState("red");
-  const [lights, setLights] = useState(["red", "yellow", "green"]);
+const Home=()=>{
+const [color,setColor]=useState("verde")
 
-  const toggleColor = () => {
-    const currentIndex = lights.indexOf(color);
-    const nextIndex = (currentIndex + 1) % lights.length;
-    setColor(lights[nextIndex]);
-  };
-
-  const addBlueLight = () => {
-    // ✅ Evita duplicados
-    if (!lights.includes("blue")) {
-      setLights([...lights, "blue"]);
+useEffect(()=>{
+  const interval=setInterval(()=>{
+    if(color==="verde"){
+setColor("amarillo")
+    }else if(color==="amarillo"){
+      setColor("rojo")
     }
-  };
+    else if (color==="rojo"){
+      setColor("verde")
+    }
+  },1000)
+  return()=>clearInterval(interval)
+},)
 
-  return (
-    <div id="app">
-      <div id="trafficTop"></div>
+  return(
+<>
+<div className="bg-dark d-flex gap-3 flex-column w-25 mx-auto justify-content-center align-items-center p-3 mt-5">
+  <div onClick={()=>setColor("verde")} className={`luz rounded-circle ${color==="verde"?"bg-success":"bg-secondary"}`}></div>
+  <div onClick={()=>setColor("amarillo")} className={`luz  rounded-circle ${color==="amarillo"?"bg-warning":"bg-secondary"}`}></div>
+  <div onClick={()=>setColor("rojo")} className={`luz  rounded-circle ${color==="rojo"?"bg-danger":"bg-secondary"}`}></div>
+</div>
+</>
 
-      <div id="container">
-        {lights.map((lightColor) => (
-          <div
-            key={lightColor} // ✅ mejor que index
-            className={`light ${lightColor} ${
-              color === lightColor ? "selected" : ""
-            }`}
-            onClick={() => setColor(lightColor)}
-          ></div>
-        ))}
-      </div>
-
-      <div className="bonus-buttons">
-        <button onClick={toggleColor}>Alternar Color</button>
-        <button onClick={addBlueLight}>Añadir blue</button>
-      </div>
-    </div>
-  );
-};
-
-const root = ReactDOM.createRoot(document.querySelector("#root"));
-root.render(<TrafficLight />);
+  )
+}
+export default Home
